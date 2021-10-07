@@ -24,24 +24,25 @@ namespace WebAPI.Services.Implementations
             _mapper = mapper;
         }
 
-        public Task<bool> Deposit(string AccountNumber, decimal amount)
+        public Task<bool> Deposit(string accountNumber, decimal amount)
         {
             throw new NotImplementedException();
         }
 
-        public Task<decimal> GetAccountBalance(string AccountNumber)
+        public async Task<decimal> GetAccountBalance(string accountNumber)
         {
-            throw new NotImplementedException();
+            var account = await Task.FromResult(_accountRepo.GetSingleByCondition(a => a.Number == accountNumber));
+            return account.Balance;
         }
 
-        public Task<IEnumerable<Account>> GetAccounts()
+        public async Task<IEnumerable<Account>> GetAccountsAsync()
         {
-            throw new NotImplementedException();
+            return await _accountRepo.GetAllAsync();
         }
 
         public async Task<ViewAccountDto> GetByAccountNumber(string accountNumber)
         {
-            Account customerAccount = _accountRepo.GetByCondition(a => a.Number == accountNumber, includeProperties: "Customer").FirstOrDefault();
+            Account customerAccount = await Task.FromResult(_accountRepo.GetByCondition(a => a.Number == accountNumber, includeProperties: "Customer").FirstOrDefault());
             return _mapper.Map<ViewAccountDto>(customerAccount);
         }
 

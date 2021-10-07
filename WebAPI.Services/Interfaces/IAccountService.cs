@@ -10,7 +10,7 @@ namespace WebAPI.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<IEnumerable<Account>> GetAccounts();
+        Task<IEnumerable<Account>> GetAccountsAsync();
         Task<decimal> GetAccountBalance(string accountNumber);
         Task<decimal> Withdraw(string accountNumber, decimal amount);
         Task<bool> Deposit(string accountNumber, decimal amount);
