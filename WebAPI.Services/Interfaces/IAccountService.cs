@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Models.Entities;
+using WebAPI.Models.DataTransferObjects;
 
 namespace WebAPI.Services.Interfaces
 {
     public interface IAccountService
     {
         Task<IEnumerable<Account>> GetAccounts();
-
-        Task<decimal> GetAccountBalance(string AccountNumber);
-
-        Task<decimal> Withdraw(string AccountNumber, decimal amount);
-
-        Task<bool> Deposit(string AccountNumber, decimal amount);
+        Task<decimal> GetAccountBalance(string accountNumber);
+        Task<decimal> Withdraw(string accountNumber, decimal amount);
+        Task<bool> Deposit(string accountNumber, decimal amount);
+        Task<ViewAccountDto> GetByAccountNumber(string accountNumber);
     }
 }

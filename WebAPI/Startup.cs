@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Extensions;
+using WebAPI.Models.Entities;
 
 namespace WebAPI
 {
@@ -25,6 +26,9 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureDbContext(Configuration);
+            services.AddAutoMapper(typeof(Startup));
+            services.AddControllers();
+            services.RegisterServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,10 +43,12 @@ namespace WebAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                //endpoints.MapGet("/", async context =>
+                //{
+                //    await context.Response.WriteAsync("Hello World!");
+                //});
+
+                endpoints.MapControllers();
             });
         }
     }

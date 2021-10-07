@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Models.Entities;
+using WebAPI.Models.DataTransferObjects;
 
 namespace WebAPI.Services.Interfaces
 {
     public interface ICustomerService
     {
-        Task<Customer> GetSingleCustomer(Guid id);
+        Task<Customer> GetSingleCustomerAsync(Guid id);
 
         Task<IEnumerable<Customer>> GetCustomersAsync();
 
-        Task<Customer> GetCustomerByAccountNumber(string AccountNumber);
+        Task<ViewAccountDto> GetCustomerByAccountNumber(string AccountNumber);
     }
 }

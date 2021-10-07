@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WebAPI.Models.Entities;
 using WebAPI.Services.Interfaces;
 using WebAPI.Data.Interfaces;
+using WebAPI.Models.DataTransferObjects;
 
 namespace WebAPI.Services.Implementations
 {
@@ -13,24 +14,29 @@ namespace WebAPI.Services.Implementations
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<Customer> _customerRepo;
+        private readonly IServiceFactory _serviceFactory;
 
-        public CustomerService(IUnitOfWork unitOfWork)
+        public CustomerService(IUnitOfWork unitOfWork, IServiceFactory serviceFactory)
         {
             _unitOfWork = unitOfWork;
+            _serviceFactory = serviceFactory;
             _customerRepo = unitOfWork.GetRepository<Customer>();
         }
 
-        public async Task<Customer> GetCustomerByAccountNumber(string AccountNumber)
+        public async Task<ViewAccountDto> GetCustomerByAccountNumber(string accountNumber)
         {
-            throw new NotImplementedException();
+            IAccountService accountService = _serviceFactory.GetService<IAccountService>();
+            var customerAccountDetail = await accountService.GetByAccountNumber(accountNumber);
+
+            return customerAccountDetail;
         }
 
-        public Task<IEnumerable<Customer>> GetCustomersAsync()
+        public async Task<IEnumerable<Customer>> GetCustomersAsync()
         {
-            throw new NotImplementedException();
+            return await _customerRepo.GetAllAsync();
         }
 
-        public async Task<Customer> GetSingleCustomer(Guid id)
+        public async Task<Customer> GetSingleCustomerAsync(Guid id)
         {
             return await Task.FromResult(_customerRepo.GetSingleByCondition(x => x.Id.Equals(id)));
         }

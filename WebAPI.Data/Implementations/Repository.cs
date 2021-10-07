@@ -78,7 +78,9 @@ namespace WebAPI.Data.Implementations
             return await _dbSet.FindAsync(id);
         }
 
-        public T GetSingleByCondition(Expression<Func<T, bool>> predicate = null, Func<IQueryable, IOrderedQueryable> orderBy = null, params string[] includeProperties)
+        public T GetSingleByCondition(Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable, IOrderedQueryable> orderBy = null, 
+            params string[] includeProperties)
         {
             if (predicate is null)
                 return _dbSet.ToList().FirstOrDefault();

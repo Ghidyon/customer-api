@@ -26,7 +26,7 @@ namespace WebAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(38,2)");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
@@ -39,6 +39,22 @@ namespace WebAPI.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                            Balance = 50.00m,
+                            CustomerId = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
+                            Number = "1005345781"
+                        },
+                        new
+                        {
+                            Id = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
+                            Balance = 510.99m,
+                            CustomerId = new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"),
+                            Number = "2333323424"
+                        });
                 });
 
             modelBuilder.Entity("WebAPI.Models.Entities.Customer", b =>
@@ -65,6 +81,26 @@ namespace WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
+                            Address = "583 Wall Dr. Gwynn Oak, MD 21207, USA",
+                            DateOfBirth = new DateTime(2001, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@domain.com",
+                            FullName = "Zubby Gideon",
+                            Phone = "08160451288"
+                        },
+                        new
+                        {
+                            Id = new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"),
+                            Address = "583 Wall Street. Gym Oak, MD 21207, USA",
+                            DateOfBirth = new DateTime(1991, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "seed@domain.com",
+                            FullName = "Seed Gideon",
+                            Phone = "015484855"
+                        });
                 });
 
             modelBuilder.Entity("WebAPI.Models.Entities.Account", b =>
