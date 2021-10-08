@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Models.DataTransferObjects
 {
-    public class WithdrawalDto
+    public class TransactDto
     {
         public decimal Amount { get; set; }
     }

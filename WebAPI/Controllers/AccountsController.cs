@@ -40,23 +40,23 @@ namespace WebAPI.Controllers
             return Ok(await _accountService.GetAccountBalance(accountNumber));
         }
 
-        [HttpPost("deposit")]
-        public async Task<IActionResult> Deposit([FromBody]DepositDto deposit)
+        [HttpPost("{accountNumber}/deposit")]
+        public async Task<IActionResult> Deposit(string accountNumber, [FromBody]TransactDto deposit)
         {
             if (deposit is null)
-                return BadRequest("deposit parameter is null");
+                return BadRequest("empty parameter");
             
-            var transactionDto = await _accountService.Deposit(deposit.AccountNumber, deposit.Amount);
+            var transactionDto = await _accountService.Deposit(accountNumber, deposit.Amount);
             if (transactionDto is null)
             {
-                return NotFound("Invalid parameters");
+                return NotFound("Invalid parameter");
             }
 
             return Ok(transactionDto);
         }
 
         [HttpPost("{accountNumber}/withdraw")]
-        public async Task<IActionResult> Withdraw(string accountNumber, [FromBody]WithdrawalDto withdrawal)
+        public async Task<IActionResult> Withdraw(string accountNumber, [FromBody]TransactDto withdrawal)
         {
             if (withdrawal is null)
                 return BadRequest("empty parameter");
@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
             var transactionDto = await _accountService.Withdraw(accountNumber, withdrawal.Amount);
             if (transactionDto is null)
             {
-                return NotFound("Invalid parameters");
+                return NotFound("Invalid parameter");
             }
 
             return Ok(transactionDto);
