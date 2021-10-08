@@ -46,15 +46,28 @@ namespace WebAPI.Controllers
             if (deposit is null)
                 return BadRequest("deposit parameter is null");
             
-            var transactionDto = await _accountService.Deposit(deposit.AccountNumber, (decimal)deposit.Amount);
+            var transactionDto = await _accountService.Deposit(deposit.AccountNumber, deposit.Amount);
             if (transactionDto is null)
             {
                 return NotFound("Invalid parameters");
             }
 
-            //return CreatedAtRoute("AccountByNumber", new { id = transactionDto.Number }, transactionDto);
             return Ok(transactionDto);
         }
-        //[HttpGet("{accountNumber}/withdraw}")]
+
+        [HttpPost("{accountNumber}/withdraw")]
+        public async Task<IActionResult> Withdraw(string accountNumber, [FromBody]WithdrawalDto withdrawal)
+        {
+            if (withdrawal is null)
+                return BadRequest("empty parameter");
+
+            var transactionDto = await _accountService.Withdraw(accountNumber, withdrawal.Amount);
+            if (transactionDto is null)
+            {
+                return NotFound("Invalid parameters");
+            }
+
+            return Ok(transactionDto);
+        }
     }
 }

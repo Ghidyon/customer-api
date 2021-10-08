@@ -73,9 +73,36 @@ namespace WebAPI.Services.Implementations
             return _mapper.Map<ViewAccountDto>(customerAccount);
         }
 
-        public Task<decimal> Withdraw(string AccountNumber, decimal amount)
+        public async Task<ViewTransactionDto> Withdraw(string accountNumber, decimal amount)
         {
-            throw new NotImplementedException();
+            if (amount <= 0)
+            {
+                return null;
+            }
+
+            var customerAccount = await Task.FromResult(_accountRepo.GetSingleByCondition(a => a.Number == accountNumber));
+
+            if (customerAccount is null)
+                return null;
+
+            if (customerAccount.Balance < amount)
+                return null;
+
+            customerAccount.Balance -= amount;
+            var account = await _accountRepo.UpdateAsync(customerAccount);
+
+            ITransactionService transactionService = _serviceFactory.GetService<ITransactionService>();
+            var transaction = new Transaction
+            {
+                CustomerId = account.CustomerId,
+                TransactionMode = TransactionMode.Debit,
+                Number = account.Number,
+                Amount = amount,
+                TimeStamp = DateTime.Now
+            };
+
+            var transactionDetails = await transactionService.AddTransaction(transaction);
+            return _mapper.Map<ViewTransactionDto>(transactionDetails);
         }
     }
 }

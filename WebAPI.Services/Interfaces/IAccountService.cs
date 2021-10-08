@@ -13,7 +13,7 @@ namespace WebAPI.Services.Interfaces
     {
         Task<IEnumerable<Account>> GetAccountsAsync();
         Task<decimal> GetAccountBalance(string accountNumber);
-        Task<decimal> Withdraw(string accountNumber, decimal amount);
+        Task<ViewTransactionDto> Withdraw(string accountNumber, decimal amount);
         Task<ViewTransactionDto> Deposit(string accountNumber, decimal amount);
         Task<ViewAccountDto> GetByAccountNumber(string accountNumber);
     }
