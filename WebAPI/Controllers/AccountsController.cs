@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             var transactionDto = await _accountService.Deposit(deposit.AccountNumber, (decimal)deposit.Amount);
             if (transactionDto is null)
             {
-                NotFound("Invalid Account Number");
+                return NotFound("Invalid parameters");
             }
 
             //return CreatedAtRoute("AccountByNumber", new { id = transactionDto.Number }, transactionDto);

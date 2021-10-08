@@ -29,6 +29,11 @@ namespace WebAPI.Services.Implementations
 
         public async Task<ViewTransactionDto> Deposit(string accountNumber, decimal amount)
         {
+            if (amount <= 0)
+            {
+                return null;
+            }
+
             var customerAccount = await Task.FromResult(_accountRepo.GetSingleByCondition(a => a.Number == accountNumber));
 
             if (customerAccount is null)
@@ -44,7 +49,7 @@ namespace WebAPI.Services.Implementations
                 TransactionMode = TransactionMode.Credit,
                 Number = account.Number,
                 Amount = amount,
-                TimeStamp = new DateTime()
+                TimeStamp = DateTime.Now
             };
 
             var transactionDetails = await transactionService.AddTransaction(transaction);
