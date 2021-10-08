@@ -33,11 +33,16 @@ namespace WebAPI.Controllers
         {
             return Ok(await _accountService.GetByAccountNumber(accountNumber));
         }
-        
+
         [HttpGet("{accountNumber}/balance")]
         public async Task<IActionResult> GetBalance(string accountNumber)
         {
-            return Ok(await _accountService.GetAccountBalance(accountNumber));
+            var viewBalanceDto = await _accountService.GetAccountBalance(accountNumber);
+
+            if (viewBalanceDto is null)
+                return NotFound("Invalid account number!");
+
+            return Ok(viewBalanceDto);
         }
 
         [HttpPost("{accountNumber}/deposit")]

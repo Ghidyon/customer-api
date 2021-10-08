@@ -20,6 +20,9 @@ namespace WebAPI.Configurations
             CreateMap<Transaction, ViewTransactionDto>()
                 .ForMember(dest => dest.AccountNumber, opt => opt.MapFrom(src => src.Number))
                 .ForMember(dest => dest.TransactionMode, opt => opt.MapFrom(src => src.TransactionMode.ToString()));
+
+            CreateMap<Account, ViewBalanceDto>()
+                .ForMember(dest => dest.AccountNumber, opt => opt.MapFrom(src => src.Number));
         }
     }
 }

@@ -56,10 +56,13 @@ namespace WebAPI.Services.Implementations
             return _mapper.Map<ViewTransactionDto>(transactionDetails);
         }
 
-        public async Task<decimal> GetAccountBalance(string accountNumber)
+        public async Task<ViewBalanceDto> GetAccountBalance(string accountNumber)
         {
             var account = await Task.FromResult(_accountRepo.GetSingleByCondition(a => a.Number == accountNumber));
-            return account.Balance;
+            if (account is null)
+                return null;
+
+            return _mapper.Map<ViewBalanceDto>(account);
         }
 
         public async Task<IEnumerable<Account>> GetAccountsAsync()
