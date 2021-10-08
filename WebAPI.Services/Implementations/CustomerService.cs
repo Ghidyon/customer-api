@@ -26,9 +26,9 @@ namespace WebAPI.Services.Implementations
         public async Task<ViewAccountDto> GetCustomerByAccountNumber(string accountNumber)
         {
             IAccountService accountService = _serviceFactory.GetService<IAccountService>();
-            var customerAccountDetail = await accountService.GetByAccountNumber(accountNumber);
+            var customerAccountDto = await accountService.GetByAccountNumber(accountNumber);
 
-            return customerAccountDetail;
+            return customerAccountDto;
         }
 
         public async Task<IEnumerable<Customer>> GetCustomersAsync()

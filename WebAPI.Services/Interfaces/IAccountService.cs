@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Models.Entities;
 using WebAPI.Models.DataTransferObjects;
+using WebAPI.Models.Enumerators;
 
 namespace WebAPI.Services.Interfaces
 {
@@ -13,7 +14,7 @@ namespace WebAPI.Services.Interfaces
         Task<IEnumerable<Account>> GetAccountsAsync();
         Task<decimal> GetAccountBalance(string accountNumber);
         Task<decimal> Withdraw(string accountNumber, decimal amount);
-        Task<bool> Deposit(string accountNumber, decimal amount);
+        Task<ViewTransactionDto> Deposit(string accountNumber, decimal amount);
         Task<ViewAccountDto> GetByAccountNumber(string accountNumber);
     }
 }

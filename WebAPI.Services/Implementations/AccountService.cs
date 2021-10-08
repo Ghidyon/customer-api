@@ -7,6 +7,7 @@ using WebAPI.Data.Interfaces;
 using WebAPI.Models.Entities;
 using WebAPI.Services.Interfaces;
 using WebAPI.Models.DataTransferObjects;
+using WebAPI.Models.Enumerators;
 using AutoMapper;
 
 namespace WebAPI.Services.Implementations
@@ -15,18 +16,39 @@ namespace WebAPI.Services.Implementations
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<Account> _accountRepo;
+        private readonly IServiceFactory _serviceFactory;
         private readonly IMapper _mapper;
 
-        public AccountService(IUnitOfWork unitOfWork, IMapper mapper)
+        public AccountService(IUnitOfWork unitOfWork, IServiceFactory serviceFactory, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _accountRepo = unitOfWork.GetRepository<Account>();
+            _serviceFactory = serviceFactory;
             _mapper = mapper;
         }
 
-        public Task<bool> Deposit(string accountNumber, decimal amount)
+        public async Task<ViewTransactionDto> Deposit(string accountNumber, decimal amount)
         {
-            throw new NotImplementedException();
+            var customerAccount = await Task.FromResult(_accountRepo.GetSingleByCondition(a => a.Number == accountNumber));
+
+            if (customerAccount is null)
+                return null;
+
+            customerAccount.Balance += amount;
+            var account = await _accountRepo.UpdateAsync(customerAccount);
+
+            ITransactionService transactionService = _serviceFactory.GetService<ITransactionService>();
+            var transaction = new Transaction
+            {
+                CustomerId = account.CustomerId,
+                TransactionMode = TransactionMode.Credit,
+                Number = account.Number,
+                Amount = amount,
+                TimeStamp = new DateTime()
+            };
+
+            var transactionDetails = await transactionService.AddTransaction(transaction);
+            return _mapper.Map<ViewTransactionDto>(transactionDetails);
         }
 
         public async Task<decimal> GetAccountBalance(string accountNumber)

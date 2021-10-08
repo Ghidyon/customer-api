@@ -30,6 +30,7 @@ namespace WebAPI.Extensions
             services.AddTransient<IUnitOfWork, UnitOfWork<WebAPIContext>>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IServiceFactory, ServiceFactory>();
             return services;
         }

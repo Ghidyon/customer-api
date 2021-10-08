@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Services.Interfaces;
 using WebAPI.Models.Entities;
+using WebAPI.Models.DataTransferObjects;
 
 namespace WebAPI.Controllers
 {
@@ -27,13 +28,33 @@ namespace WebAPI.Controllers
             return Ok(await _accountService.GetAccountsAsync());
         }
 
-        [HttpGet("{accountNumber}")]
+        [HttpGet("{accountNumber}", Name = "AccountByNumber")]
+        public async Task<IActionResult> Account(string accountNumber)
+        {
+            return Ok(await _accountService.GetByAccountNumber(accountNumber));
+        }
+        
+        [HttpGet("{accountNumber}/balance")]
         public async Task<IActionResult> GetBalance(string accountNumber)
         {
             return Ok(await _accountService.GetAccountBalance(accountNumber));
         }
 
-        /*[HttpGet("{accountNumber}/deposit}")]
-        [HttpGet("{accountNumber}/withdraw}")]*/
+        [HttpPost("deposit")]
+        public async Task<IActionResult> Deposit([FromBody]DepositDto deposit)
+        {
+            if (deposit is null)
+                return BadRequest("deposit parameter is null");
+            
+            var transactionDto = await _accountService.Deposit(deposit.AccountNumber, (decimal)deposit.Amount);
+            if (transactionDto is null)
+            {
+                NotFound("Invalid Account Number");
+            }
+
+            //return CreatedAtRoute("AccountByNumber", new { id = transactionDto.Number }, transactionDto);
+            return Ok(transactionDto);
+        }
+        //[HttpGet("{accountNumber}/withdraw}")]
     }
 }

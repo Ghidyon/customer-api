@@ -23,13 +23,20 @@ namespace WebAPI.Data.Implementations
 
         public T Add(T obj)
         {
-            _dbContext.Add(obj);
+            _dbSet.Add(obj);
             return obj;
         }
 
         public async Task<T> AddAsync(T obj)
         {
             Add(obj);
+            await _dbContext.SaveChangesAsync();
+            return obj;
+        }
+
+        public async Task<T> UpdateAsync(T obj)
+        {
+            _dbContext.Update(obj);
             await _dbContext.SaveChangesAsync();
             return obj;
         }

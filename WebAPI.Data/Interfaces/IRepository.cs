@@ -13,6 +13,8 @@ namespace WebAPI.Data.Interfaces
 
         Task<T> AddAsync(T obj);
 
+        Task<T> UpdateAsync(T obj);
+
         IEnumerable<T> GetAll();
 
         Task<IEnumerable<T>> GetAllAsync();
